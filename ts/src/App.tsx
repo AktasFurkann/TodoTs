@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Input from "./components/Input";
+import Todos from "./types/Type";
+import Messages from "./components/Messages";
 
-function App() {
+const App: React.FC = () => {
+  const [value, setValue] = useState<string>("");
+  const [todo, setTodo] = useState<Todos[]>([]);
+
+  console.log(value, todo);
+
+  const addMessage = () => {
+    if (todo) {
+      setTodo([...todo, { message: value, id: todo.length + 1 }]);
+      setValue("");
+    }
+  };
+
+  const deleteMessage = (id: number) => {
+    setTodo(todo.filter(item => item.id !== id));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Input addMessage={addMessage} value={value} setValue={setValue}></Input>
+      <Messages deleteMessage={deleteMessage} todo={todo}></Messages>
     </div>
   );
-}
+};
 
 export default App;
